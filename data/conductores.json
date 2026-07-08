@@ -12,5 +12,19 @@
     "modelo": "Toyota Negro",
     "color": "Rojo",
     "capacidad": 4
+  },
+  {
+    "id": 2,
+    "nombre": "Aaron Rojas",
+    "correo": "aaron.rojas@unmsm.edu.pe",
+    "telefono": "+51 900 105 895",
+    "tipo": "conductor",
+    "fecha_registro": "2026-07-08 00:00:00",
+    "password_hash": "pbkdf2:sha256:1000000$2F0j2M9lI4tQ5sPq$8bdf4f9ce6c17e3f25bcf9ac6c609c0daff6a6d3d9be72d873d8840c472b4e8",
+    "licencia": "123456789",
+    "placa": "XYZ-123",
+    "modelo": "Hyundai Accent",
+    "color": "Blanco",
+    "capacidad": 4
   }
 ]
