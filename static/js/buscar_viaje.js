@@ -26,19 +26,71 @@ async function calcularDistanciaEnServidor(origen, destino) {
     }
 }
 
+function resolverPuntoParaCalculo(punto, nombreFallback) {
+    if (!punto) return { nombre: nombreFallback || 'Desconocido', lat: null, lng: null };
+
+    if (punto.lat != null && punto.lng != null) {
+        return { ...punto, nombre: punto.nombre || nombreFallback || 'Desconocido' };
+    }
+
+    const nombre = punto.nombre || nombreFallback || 'Desconocido';
+    const nodo = findNodeByName(nombre);
+    if (nodo && nodo.lat != null && nodo.lng != null) {
+        return { nombre: nodo.nombre, lat: nodo.lat, lng: nodo.lng };
+    }
+
+    const allNodes = Array.isArray(nodes) && nodes.length > 0
+        ? [...nodes, ...FALLBACK_NODES]
+        : FALLBACK_NODES;
+
+    const lat = Number(punto.lat);
+    const lng = Number(punto.lng);
+    if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+        let nearest = null;
+        let minDist = Infinity;
+        allNodes.forEach(n => {
+            if (n.lat == null || n.lng == null) return;
+            const d = haversine(lat, lng, Number(n.lat), Number(n.lng));
+            if (d < minDist) {
+                minDist = d;
+                nearest = n;
+            }
+        });
+        if (nearest) {
+            return { nombre: nearest.nombre, lat: Number(nearest.lat), lng: Number(nearest.lng) };
+        }
+    }
+
+    return { nombre, lat: null, lng: null };
+}
+
 async function mostrarRutaCalculada(origenPt, destinoPt) {
     if (!origenPt || !destinoPt) return;
 
-    const info = await calcularDistanciaEnServidor(origenPt, destinoPt);
+    const origenResuelto = resolverPuntoParaCalculo(origenPt, origenPt?.nombre || 'Origen');
+    const destinoResuelto = resolverPuntoParaCalculo(destinoPt, destinoPt?.nombre || 'Destino');
+
+    if (origenResuelto.lat == null || origenResuelto.lng == null || destinoResuelto.lat == null || destinoResuelto.lng == null) {
+        const distanciaTxtEl = document.querySelector("#distancia");
+        const tiempoTxtEl = document.querySelector("#tiempo");
+        const precioTxtEl = document.querySelector("#precio");
+        if (distanciaTxtEl) distanciaTxtEl.textContent = "-- km";
+        if (tiempoTxtEl) tiempoTxtEl.textContent = "-- minutos";
+        if (precioTxtEl) precioTxtEl.textContent = "S/. --";
+        window._ultimaDistanciaCalculada = 0.0;
+        return;
+    }
+
+    const info = await calcularDistanciaEnServidor(origenResuelto, destinoResuelto);
 
     const distanciaTxtEl = document.querySelector("#distancia");
     const tiempoTxtEl = document.querySelector("#tiempo");
     const precioTxtEl = document.querySelector("#precio");
 
-    if (!info) {
-        if (distanciaTxtEl) distanciaTxtEl.textContent = "0.0 km";
-        if (tiempoTxtEl) tiempoTxtEl.textContent = "0 minutos";
-        if (precioTxtEl) precioTxtEl.textContent = "S/. 3.00";
+    if (!info || info.error) {
+        if (distanciaTxtEl) distanciaTxtEl.textContent = "-- km";
+        if (tiempoTxtEl) tiempoTxtEl.textContent = "-- minutos";
+        if (precioTxtEl) precioTxtEl.textContent = "S/. --";
         window._ultimaDistanciaCalculada = 0.0;
         return;
     }
