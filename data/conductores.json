@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "nombre": "javicho rodrigues",
+    "correo": "javi@gmail.com",
+    "telefono": "+51 934 740 123",
+    "tipo": "conductor",
+    "fecha_registro": "2025-12-01 17:09:41",
+    "password_hash": "pbkdf2:sha256:1000000$fcPvS9ep6q58xsVi$199b8f48d434509cdc9979a21551bf7d5abd4a80a0d019db4ce9886491cfbdd9",
+    "licencia": "897896877",
+    "placa": "ABC-456",
+    "modelo": "Toyota Negro",
+    "color": "Rojo",
+    "capacidad": 4
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "pasajero_id": 2,
+    "origen": {
+      "nombre": "Centro de Lima",
+      "lat": -12.0225792,
+      "lng": -76.9982464
+    },
+    "destino": {
+      "nombre": "Centro de Lima",
+      "lat": -12.024462268482782,
+      "lng": -77.00832366943361
+    },
+    "distancia": 1.56,
+    "precio_estandar": 8.1,
+    "estado": "cancelado_pasajero",
+    "conductor_id": null,
+    "precio_acordado": null,
+    "fecha_creacion": "2025-12-01 17:10:39",
+    "fecha_partida_estimada": "2025-12-01 17:10:39",
+    "hora_seleccionada": "ahora",
+    "fecha_actualizacion": "2025-12-01 17:13:36",
+    "posicion_cola": 1,
+    "fecha_confirmacion": "2025-12-01 17:10:57",
+    "motivo_cancelacion": "Cancelado por el pasajero",
+    "fecha_cancelacion": "2025-12-01 17:13:36",
+    "conductor_id_cancelado": 1,
+    "cancelacion_vista_por_conductor": true,
+    "fecha_vista_conductor": "2025-12-01 17:14:19"
+  },
+  {
+    "id": 2,
+    "pasajero_id": 2,
+    "origen": {
+      "nombre": "Centro de Lima",
+      "lat": -12.0225792,
+      "lng": -76.9982464
+    },
+    "destino": {
+      "nombre": "Comas",
+      "lat": -11.944,
+      "lng": -77.062
+    },
+    "distancia": 16.21,
+    "precio_estandar": 41.8,
+    "estado": "cancelado_pasajero",
+    "conductor_id": null,
+    "precio_acordado": null,
+    "fecha_creacion": "2025-12-01 17:47:39",
+    "fecha_partida_estimada": "2025-12-01 17:47:39",
+    "hora_seleccionada": "ahora",
+    "fecha_actualizacion": "2025-12-01 17:49:03",
+    "posicion_cola": 1,
+    "motivo_cancelacion": "Cancelado por el pasajero",
+    "fecha_cancelacion": "2025-12-01 17:49:03"
+  },
+  {
+    "id": 3,
+    "pasajero_id": 2,
+    "origen": {
+      "nombre": "Centro de Lima",
+      "lat": -12.0225792,
+      "lng": -76.9982464
+    },
+    "destino": {
+      "nombre": "Carabayllo",
+      "lat": -11.905,
+      "lng": -77.031
+    },
+    "distancia": 22.09,
+    "precio_estandar": 55.3,
+    "estado": "cancelado_pasajero",
+    "conductor_id": null,
+    "precio_acordado": null,
+    "fecha_creacion": "2025-12-01 17:57:08",
+    "fecha_partida_estimada": "2025-12-01 17:57:08",
+    "hora_seleccionada": "ahora",
+    "fecha_actualizacion": "2025-12-01 17:57:34",
+    "posicion_cola": 1,
+    "motivo_cancelacion": "Cancelado por el pasajero",
+    "fecha_cancelacion": "2025-12-01 17:57:34"
+  },
+  {
+    "id": 4,
+    "pasajero_id": 2,
+    "origen": {
+      "nombre": "Centro de Lima",
+      "lat": -12.0225792,
+      "lng": -76.9982464
+    },
+    "destino": {
+      "nombre": "Comas",
+      "lat": -11.944,
+      "lng": -77.062
+    },
+    "distancia": 16.21,
+    "precio_estandar": 41.8,
+    "estado": "cancelado_pasajero",
+    "conductor_id": null,
+    "precio_acordado": null,
+    "fecha_creacion": "2025-12-01 17:58:01",
+    "fecha_partida_estimada": "2025-12-01 17:58:01",
+    "hora_seleccionada": "ahora",
+    "fecha_actualizacion": "2025-12-01 17:58:16",
+    "posicion_cola": 1,
+    "motivo_cancelacion": "Cancelado por el pasajero",
+    "fecha_cancelacion": "2025-12-01 17:58:16"
+  }
+]
