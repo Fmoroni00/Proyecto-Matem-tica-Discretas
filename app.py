@@ -1143,13 +1143,47 @@ def _nodos_catalog():
 
 _NODOS_LIMA = _nodos_catalog()
 
+
 def _lookup_coords(nombre):
     if not nombre:
         return None
     key = str(nombre).strip().lower()
     return _NODOS_LIMA.get(key)
 
-def _norm_point(p):
+
+def _lookup_nearest_coords(nombre, lat=None, lng=None):
+    """Busca el punto válido más cercano entre los nodos conocidos."""
+    if not nombre and (lat is None or lng is None):
+        return None
+
+    if lat is not None and lng is not None:
+        candidates = []
+        for node_name, coords in _NODOS_LIMA.items():
+            if coords:
+                candidates.append((node_name, coords[0], coords[1]))
+        if not candidates:
+            return None
+
+        from math import radians, sin, cos, sqrt, atan2
+
+        def _distance(lat1, lng1, lat2, lng2):
+            R = 6371
+            dlat = radians(lat2 - lat1)
+            dlon = radians(lng2 - lng1)
+            a = sin(dlat / 2) ** 2 + cos(radians(lat1)) * cos(radians(lat2)) * sin(dlon / 2) ** 2
+            c = 2 * atan2(sqrt(a), sqrt(1 - a))
+            return R * c
+
+        nearest = min(candidates, key=lambda item: _distance(lat, lng, item[1], item[2]))
+        return nearest[1], nearest[2]
+
+    hit = _lookup_coords(nombre)
+    if hit:
+        return hit
+
+    return None
+
+def _norm_point(p, default_to_center=True):
     """Normaliza un punto {nombre, lat, lng}; si faltan coords, las busca por nombre."""
     if not isinstance(p, dict):
         p = {"nombre": str(p)}
@@ -1160,14 +1194,28 @@ def _norm_point(p):
         hit = _lookup_coords(nombre)
         if hit:
             lat, lng = hit
+        else:
+            lat_lng = _lookup_nearest_coords(nombre, lat=p.get("lat"), lng=p.get("lng"))
+            if lat_lng:
+                lat, lng = lat_lng
+    if lat is None or lng is None:
+        if default_to_center:
+            return {
+                "nombre": str(nombre),
+                "lat": -12.0464,
+                "lng": -77.0428,
+            }
+        return None
     try:
         return {
             "nombre": str(nombre),
-            "lat": float(lat if lat is not None else -12.0464),
-            "lng": float(lng if lng is not None else -77.0428),
+            "lat": float(lat),
+            "lng": float(lng),
         }
     except Exception:
-        return {"nombre": str(nombre), "lat": -12.0464, "lng": -77.0428}
+        if default_to_center:
+            return {"nombre": str(nombre), "lat": -12.0464, "lng": -77.0428}
+        return None
 
 
 
@@ -1325,11 +1373,17 @@ def api_calcular_distancia():
         
         origen = data.get('origen', {})
         destino = data.get('destino', {})
-        
-        lat1 = float(origen.get('lat', 0))
-        lng1 = float(origen.get('lng', 0))
-        lat2 = float(destino.get('lat', 0))
-        lng2 = float(destino.get('lng', 0))
+
+        origen_pt = _norm_point(origen, default_to_center=False)
+        destino_pt = _norm_point(destino, default_to_center=False)
+
+        if not origen_pt or not destino_pt:
+            return jsonify({"error": "No se pudieron resolver coordenadas del origen o destino"}), 400
+
+        lat1 = float(origen_pt['lat'])
+        lng1 = float(origen_pt['lng'])
+        lat2 = float(destino_pt['lat'])
+        lng2 = float(destino_pt['lng'])
         
         distancia = calcular_distancia_haversine(lat1, lng1, lat2, lng2)
         
