@@ -25,5 +25,14 @@
     "tipo": "pasajero",
     "fecha_registro": "2025-11-30 21:23:02",
     "password_hash": "pbkdf2:sha256:1000000$qr8PldTcM7kmPwu0$6b7270ee40cbf77d10feb6d8a38576f4932ccd017ad9a03094bc9a84b309529e"
+  },
+  {
+    "id": 4,
+    "nombre": "Felix Anselmo",
+    "correo": "moronihlj@gmail.com",
+    "telefono": "+51 906 556 695",
+    "tipo": "pasajero",
+    "fecha_registro": "2026-07-08 00:00:00",
+    "password_hash": "pbkdf2:sha256:1000000$h2if7Z8iQ4T2Wwbv$0ef2e8a62169a7ac0cf32dd7cb63d0e6c5e443d358d6565b20dc2fd98a91dd3d"
   }
 ]
