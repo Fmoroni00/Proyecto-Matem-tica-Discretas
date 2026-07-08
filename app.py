@@ -54,7 +54,7 @@ from servicios.usuarios_repo import (
 )
 
 from servicios.solicitudes_mejoradas import encolar_solicitud
-from servicios.gestor_rutas import calcular_mejor_ruta
+from servicios.gestor_rutas import calcular_mejor_ruta, estimar_tiempo_viaje
 
 app = Flask(__name__)
 app.secret_key = 'tu_clave_secreta_aqui'  # en prod: usa variable de entorno
@@ -1336,10 +1336,12 @@ def api_calcular_distancia():
         from servicios.solicitudes_mejoradas import calcular_precio
         precio = calcular_precio(distancia)
         
+        tiempo_estimado = estimar_tiempo_viaje(distancia)
+
         return jsonify({
             "distancia": round(distancia, 2),
             "precio_estimado": round(precio, 2),
-            "tiempo_estimado": round(distancia * 3, 0)  # ~3 min por km
+            "tiempo_estimado": tiempo_estimado
         }), 200
         
     except Exception as e:
@@ -1422,8 +1424,7 @@ def buscar_viajes():
         from servicios.solicitudes_mejoradas import calcular_precio
         precio_estimado = round(calcular_precio(distancia), 2)
         
-        # Estimación de tiempo: En tráfico de Lima ~3.5 mins por km (ajustable)
-        tiempo_estimado = round(distancia * 3.5, 0)
+        tiempo_estimado = estimar_tiempo_viaje(distancia)
 
         return jsonify({
             "ok": True,
